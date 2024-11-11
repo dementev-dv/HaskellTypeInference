@@ -2,8 +2,10 @@
 #define LEXER_HPP_
 
 #include <string>
+#include <iostream>
 
 enum Tag {
+  START,
   ID,
   NUM,
   EQ,
@@ -24,7 +26,9 @@ enum Tag {
 class Token {
  public:
   Token(Tag t, std::string v)
-    : tag_(t), val_(v) { }
+    : tag_(t), val_(v) {
+    // std::cout << val_ << std::endl;
+  }
 
   Tag tag() { return tag_; }
   std::string str() { return val_; }
@@ -36,7 +40,9 @@ class Token {
 
 class Lexer {
  public:
-  Lexer(std::string in) : in_(in) { }
+  Lexer(std::string in) : in_(in) {
+    // std::cout << in_ << std::endl;
+  }
 
   Token Next() {
     while(pos_ < in_.size() && isspace(in_[pos_])) {
@@ -66,7 +72,7 @@ class Lexer {
       return Token(ID, id);
     }
 
-    pos_++:
+    pos_++;
     switch (curr) {
       case ':': return Token(COLON, ":");
       case '=': return Token(EQ, "=");
@@ -79,7 +85,7 @@ class Lexer {
       case '(': return Token(RPAR, "(");
       case ')': return Token(LPAR, ")");
       case '_': return Token(WILD, "_");
-      default:
+      default: return Token(ERROR, std::string(1, curr));
     }
 
     return Token(ERROR, std::string(1, curr));

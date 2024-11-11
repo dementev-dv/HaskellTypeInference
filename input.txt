@@ -1,0 +1,2 @@
+f g [] = []
+f g (x:xs) = (g x : f g xs)
